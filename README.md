@@ -1,40 +1,37 @@
-# Custom Game Cursor Effects 🎮
+# Windows Desktop Game Cursor Effects 🎮
 
-A simple, lightweight web project that changes your standard browser cursor into a gaming crosshair (inspired by GTA, Free Fire, and Fortnite) and leaves a realistic bullet hole mark wherever you click on the screen.
+Turn your actual Windows system cursor into a gaming crosshair (GTA, Free Fire, or Fortnite style) that overlays your entire desktop, apps, and browsers, leaving temporary bullet hole marks wherever you click!
 
-No installations, no terminal commands, and no setups required!
-
----
-
-## 🚀 How to Run and Use (Without Git, Node, NPM, or Python)
-
-You don't need any developer tools installed on your computer to test or use this project. Follow these simple steps:
-
-### 1. Download the Project
-1. Scroll to the top of this GitHub repository page.
-2. Click the green **Code** button on the right side.
-3. Select **Download ZIP** from the dropdown menu.
-4. Extract the downloaded `.zip` file into any folder on your computer.
-
-### 2. Run the Project
-1. Open the extracted folder.
-2. Double-click the **`index.html`** file.
-3. It will instantly open in your default web browser (Chrome, Edge, Firefox, Brave, Safari, etc.).
-
-### 3. How to Use
-* **Move your mouse:** Your regular cursor is hidden, and the custom gaming crosshair will follow your movement.
-* **Left-click anywhere:** A bullet hole mark will appear exactly where you clicked and will naturally fade away after a few seconds.
+No developer tools (Node, NPM, Python, or Git) required.
 
 ---
 
-## 📂 Project Structure
+## 🚀 How to Run on Your PC (Without Installing Anything)
 
-* `index.html` — Contains the entire structure, design (CSS), and click logic (JavaScript).
-* `crosshair.png` — The image file used for your gaming crosshair/cursor.
-* `bullet-hole.png` — The image file used for the shooting mark effect.
+### Option A: The Quick Way (Pre-compiled Executable)
+1. Download the `game_cursor.exe`, `crosshair.png`, and `bullet-hole.png` files from this repository.
+2. Place all three files together in the **same folder**.
+3. Double-click **`game_cursor.exe`**.
+4. Enjoy! Your mouse cursor is now a gaming crosshair.
+
+### Option B: Running from Source (Requires AutoHotkey)
+1. Download this repository as a `.zip` and extract it.
+2. Download and install [AutoHotkey](https://autohotkey.com) (a lightweight Windows automation tool).
+3. Right-click the **`game_cursor.ahk`** file and select **Run Script**.
 
 ---
 
-## 🌐 Live Preview (Alternative)
+## 🕹️ Controls
 
-If you want to try it out directly on the internet without downloading anything, just access the deployed website link via **GitHub Pages** provided in the About section of this repository.
+* **Mouse Movement:** The custom crosshair will replace your standard desktop cursor globally.
+* **Left Click (Anywhere):** Spawns a bullet hole mark on top of your screen that automatically clears up after 3 seconds.
+* **ESC Key:** Press the `ESC` key on your keyboard at any time to turn off the mod and restore your normal Windows cursor.
+
+---
+
+## 📂 Required Files in the Folder
+
+For this to work, ensure these files remain in the exact same directory:
+* `game_cursor.exe` (or `game_cursor.ahk`)
+* `crosshair.png` (Your transparent gaming target image)
+* `bullet-hole.png` (Your transparent bullet damage image)
