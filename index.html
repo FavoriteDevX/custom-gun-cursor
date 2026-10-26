@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Cursor Effect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #121212;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            color: #ffffff;
+            cursor: none; 
+        }
+
+        #custom-cursor {
+            width: 40px;
+            height: 40px;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            background-image: url('crosshair.png'); 
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .bullet-hole {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            background-image: url('bullet-hole.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: shoot-fade 3s forwards;
+        }
+
+        @keyframes shoot-fade {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+        }
+
+        .instruction {
+            text-align: center;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+
+    <div class="instruction">
+        <h1>CLICK ANYWHERE TO SHOOT</h1>
+        <p>Your cursor is now a game crosshair.</p>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('click', (e) => {
+            const bulletHole = document.createElement('div');
+            bulletHole.className = 'bullet-hole';
+            
+            bulletHole.style.left = e.pageX + 'px';
+            bulletHole.style.top = e.pageY + 'px';
+            
+            document.body.appendChild(bulletHole);
+
+            setTimeout(() => {
+                bulletHole.remove();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
