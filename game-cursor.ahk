@@ -3,48 +3,46 @@
 SetWorkingDir %A_ScriptDir%
 SendMode Input
 
-; --- CONFIGURAÇÃO INICIAL ---
-; Define os caminhos das imagens que devem estar na mesma pasta
+; --- INITIAL CONFIGURATION ---
 CrosshairImg := "crosshair.png"
 BulletImg := "bullet-hole.png"
 
-; Verifica se as imagens existem para não dar erro
+; Check if required images exist in the folder
 if (!FileExist(CrosshairImg) || !FileExist(BulletImg)) {
     MsgBox, 48, Error, Please make sure 'crosshair.png' and 'bullet-hole.png' are in the same folder!
     ExitApp
 }
 
-; Esconde o cursor padrão do Windows enquanto o script estiver rodando
+; Hide the default Windows cursor
 SystemCursor("Hide")
 
-; Cria a janela do Custom Cursor (Mira)
-Gui, Cursor: +AlwaysOnTop -Caption +Owner +LastFound +E0x20 ; E0x20 permite clicar através da imagem
+; Setup Custom Crosshair Window
+Gui, Cursor: +AlwaysOnTop -Caption +Owner +LastFound +E0x20
 Gui, Cursor: Margin, 0, 0
-Gui, Cursor: Add, Picture, w40 h40 vCrosshairPic, %CrosshairImg%
+Gui, Cursor: Add, Picture, w40 h40, %CrosshairImg%
 Gui, Cursor: Color, EEAA99
-WinSet, TransColor, EEAA99 ; Torna o fundo da imagem transparente
+WinSet, TransColor, EEAA99 
 Gui, Cursor: Show, x-100 y-100 NoActivate
 
-; Configura um timer para atualizar a posição da mira a cada 10 milissegundos
+; Timer to update crosshair position (every 10ms)
 SetTimer, UpdateCursor, 10
 return
 
-; --- ATUALIZAR POSIÇÃO DA MIRA ---
+; --- UPDATE CROSSHAIR POSITION ---
 UpdateCursor:
 CoordMode, Mouse, Screen
 MouseGetPos, MouseX, MouseY
-; Centraliza a mira de 40x40 pixels na ponta do mouse
 NewX := MouseX - 20
 NewY := MouseY - 20
 Gui, Cursor: Show, x%NewX% y%NewY% NoActivate
 return
 
-; --- CLIQUE DO MOUSE (EFEITO DE TIRO) ---
+; --- MOUSE CLICK (BULLET HOLE EFFECT) ---
 ~*LButton::
 CoordMode, Mouse, Screen
 MouseGetPos, ShotX, ShotY
 
-; Cria um ID único para cada marca de tiro para permitir vários cliques seguidos
+; Generate a unique ID for each bullet hole
 Random, ShotID, 1000, 9999
 Gui, Bullet%ShotID%: +AlwaysOnTop -Caption +Owner +LastFound +E0x20
 Gui, Bullet%ShotID%: Margin, 0, 0
@@ -52,30 +50,26 @@ Gui, Bullet%ShotID%: Add, Picture, w30 h30, %BulletImg%
 Gui, Bullet%ShotID%: Color, EEAA99
 WinSet, TransColor, EEAA99
 
-; Posiciona a marca do tiro (30x30 pixels) centralizada no clique
 BX := ShotX - 15
 BY := ShotY - 15
 Gui, Bullet%ShotID%: Show, x%BX% y%BY% NoActivate
 
-; Agenda a destruição da marca de tiro após 3 segundos
-SetTimer, DestroyBullet%ShotID%, -3000
+; Dynamically schedule destruction of this specific bullet hole after 3 seconds
+BoundFunc := Func("DestroyBullet").Bind(ShotID)
+SetTimer, %BoundFunc%, -3000
 return
 
-; Label dinâmico para limpar a marca de tiro da tela
-DestroyBullet1000:
-DestroyBullet1001:
-; (O AutoHotkey gerencia a remoção via timer negativo)
-SetTimer, % A_ThisLabel, Off
-StringReplace, ThisGuiID, A_ThisLabel, DestroyBullet
-Gui, Bullet%ThisGuiID%: Destroy
-return
+; Function to clean up the screen
+DestroyBullet(Id) {
+    Gui, Bullet%Id%: Destroy
+}
 
-; --- FECHAR O SCRIPT (Aperte ESC para sair) ---
+; --- CLOSE SCRIPT AND RESTORE CURSOR (Press ESC) ---
 Esc::
-SystemCursor("Show") ; Devolve o cursor normal do Windows
+SystemCursor("Show")
 ExitApp
 
-; --- FUNÇÃO PARA ESCONDER/MOSTRAR CURSOR DO SISTEMA ---
+; --- SYSTEM FUNCTION TO TOGGLE WINDOWS CURSOR ---
 SystemCursor(OnOff="Show") {
     Static AndMask, XorMask
     If (OnOff = "Hide") {
